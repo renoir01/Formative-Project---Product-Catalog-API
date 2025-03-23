@@ -1,20 +1,28 @@
 const multer = require('multer');
-const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
 const { AppError } = require('./error.middleware');
+const { errorResponse } = require('../utils/response.utils');
 
 // Ensure upload directory exists
-const uploadDir = path.join(__dirname, '../../public/uploads');
+const uploadDir = path.join(__dirname, '../../uploads');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Configure multer for memory storage
-const multerStorage = multer.memoryStorage();
+// Configure storage
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+    }
+});
 
-// Filter only images
-const multerFilter = (req, file, cb) => {
+// File filter
+const fileFilter = (req, file, cb) => {
     if (file.mimetype.startsWith('image')) {
         cb(null, true);
     } else {
@@ -22,69 +30,32 @@ const multerFilter = (req, file, cb) => {
     }
 };
 
-// Multer upload configuration
+// Configure upload
 const upload = multer({
-    storage: multerStorage,
-    fileFilter: multerFilter,
+    storage: storage,
+    fileFilter: fileFilter,
     limits: {
         fileSize: 5 * 1024 * 1024 // 5MB limit
     }
 });
 
+// Middleware for handling file upload errors
+const handleUploadError = (err, req, res, next) => {
+    if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(400).json(
+                errorResponse('File too large', `Maximum file size is 5MB`)
+            );
+        }
+        return res.status(400).json(errorResponse('File upload error', err.message));
+    }
+    next(err);
+};
+
 // Middleware for processing product images
 exports.uploadProductImage = upload.single('image');
-
-exports.resizeProductImage = async (req, res, next) => {
-    try {
-        if (!req.file) return next();
-
-        // Generate unique filename
-        const filename = `product-${req.params.id || Date.now()}.webp`;
-        req.file.filename = filename;
-
-        // Process image with sharp
-        await sharp(req.file.buffer)
-            .resize(800, 800, { // Standard size for product images
-                fit: 'contain',
-                background: { r: 255, g: 255, b: 255, alpha: 1 }
-            })
-            .webp({ quality: 90 })
-            .toFile(path.join(uploadDir, filename));
-
-        // Add image URL to request body
-        req.body.imageUrl = `/uploads/${filename}`;
-        
-        next();
-    } catch (error) {
-        next(new AppError('Error processing image', 500));
-    }
-};
 
 // Middleware for processing collection images
 exports.uploadCollectionImage = upload.single('image');
 
-exports.resizeCollectionImage = async (req, res, next) => {
-    try {
-        if (!req.file) return next();
-
-        // Generate unique filename
-        const filename = `collection-${req.params.id || Date.now()}.webp`;
-        req.file.filename = filename;
-
-        // Process image with sharp
-        await sharp(req.file.buffer)
-            .resize(1200, 600, { // Wide format for collection banners
-                fit: 'cover',
-                position: 'center'
-            })
-            .webp({ quality: 90 })
-            .toFile(path.join(uploadDir, filename));
-
-        // Add image URL to request body
-        req.body.imageUrl = `/uploads/${filename}`;
-        
-        next();
-    } catch (error) {
-        next(new AppError('Error processing image', 500));
-    }
-};
+exports.handleUploadError = handleUploadError;

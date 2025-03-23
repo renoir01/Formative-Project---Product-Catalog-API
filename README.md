@@ -1,15 +1,25 @@
 # Product Catalog API
 
-A RESTful API for managing product catalogs with support for categories, variants, and inventory tracking.
+A comprehensive RESTful API for managing product catalogs with support for categories, variants, inventory tracking, and user authentication.
 
 ## Features
 
 1. Complete CRUD operations for products and categories
 2. Product variant support (size, color, SKU)
-3. Advanced search and filtering
+3. Advanced search and filtering with pagination
 4. Inventory tracking
 5. Category management
-6. Rate limiting and security features
+6. User authentication and authorization
+7. Rate limiting and security features
+8. File upload support for product images
+9. Comprehensive API documentation with Swagger
+10. Test coverage with Jest
+
+## Prerequisites
+
+- Node.js (v14 or higher)
+- MongoDB (v4.4 or higher)
+- npm or yarn
 
 ## Installation
 
@@ -33,104 +43,156 @@ cp .env.example .env
 # Edit .env with your settings
 ```
 
-4. Start the server
+4. Start MongoDB (if not running)
 
 ```bash
+# Windows
+net start MongoDB
+# Linux/Mac
+sudo systemctl start mongod
+```
+
+5. Start the server
+
+```bash
+# Development
+npm run dev
+
+# Production
 npm start
+```
+
+## API Documentation
+
+Access the Swagger documentation at: `http://localhost:3001/api-docs`
+
+### Authentication
+
+All protected endpoints require a JWT token in the Authorization header:
+
+```bash
+Authorization: Bearer <your-token-here>
+```
+
+### Response Format
+
+All responses follow this standard format:
+
+```json
+{
+    "success": true,
+    "message": "Operation successful",
+    "data": {}
+}
+```
+
+Error responses:
+
+```json
+{
+    "success": false,
+    "message": "Error message here",
+    "errors": []
+}
+```
+
+Paginated responses:
+
+```json
+{
+    "success": true,
+    "data": [],
+    "pagination": {
+        "page": 1,
+        "limit": 10,
+        "total": 100,
+        "pages": 10
+    }
+}
 ```
 
 ## API Endpoints
 
+### Authentication
+
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `GET /api/auth/profile` - Get user profile (protected)
+
 ### Products
 
-1. `GET /api/products` - List all products
-2. `POST /api/products` - Create a new product
-3. `GET /api/products/:id` - Get a specific product
-4. `PUT /api/products/:id` - Update a product
-5. `DELETE /api/products/:id` - Delete a product
-6. `GET /api/products/stats` - Get product statistics
-7. `GET /api/products/low-stock` - Get low stock products
+- `GET /api/products` - List all products (paginated)
+- `POST /api/products` - Create new product (protected)
+- `GET /api/products/:id` - Get specific product
+- `PUT /api/products/:id` - Update product (protected)
+- `DELETE /api/products/:id` - Delete product (protected)
+- `GET /api/products/stats` - Get product statistics (protected)
+- `GET /api/products/low-stock` - Get low stock products (protected)
 
 ### Categories
 
-1. `GET /api/categories` - List all categories
-2. `POST /api/categories` - Create a new category
-3. `GET /api/categories/:id` - Get a specific category
-4. `PUT /api/categories/:id` - Update a category
-5. `DELETE /api/categories/:id` - Delete a category
+- `GET /api/categories` - List all categories
+- `POST /api/categories` - Create new category (protected)
+- `GET /api/categories/:id` - Get specific category
+- `PUT /api/categories/:id` - Update category (protected)
+- `DELETE /api/categories/:id` - Delete category (protected)
 
-## Example Usage
+## Query Parameters
 
-### Create a Product
+### Products List
 
-```bash
-curl -X POST http://localhost:3001/api/products \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Classic T-Shirt",
-    "description": "Comfortable cotton t-shirt",
-    "basePrice": 19.99,
-    "category": "category_id_here",
-    "tags": ["clothing", "t-shirt", "casual"],
-    "variants": [
-      {
-        "size": "M",
-        "color": "Blue",
-        "sku": "TS-BL-M",
-        "price": 19.99,
-        "stock": 100
-      }
-    ]
-  }'
-```
+- `page`: Page number (default: 1)
+- `limit`: Items per page (default: 10, max: 100)
+- `search`: Search term for name/description
+- `minPrice`: Minimum price filter
+- `maxPrice`: Maximum price filter
+- `category`: Filter by category ID
+- `sort`: Sort order (price_asc, price_desc, name_asc, name_desc)
 
-### Search Products
-
-```bash
-# Search by text
-curl "http://localhost:3001/api/products?search=cotton"
-
-# Filter by price range and color
-curl "http://localhost:3001/api/products?minPrice=15&maxPrice=20&color=Blue"
-
-# Get low stock items
-curl "http://localhost:3001/api/products/low-stock?threshold=10"
-```
-
-## Error Handling
-
-The API uses standard HTTP status codes and returns error messages in the following format:
-
-```json
-{
-  "error": "Error message here",
-  "status": "fail",
-  "statusCode": 400
-}
-```
-
-## Security Features
-
-1. CORS enabled
-2. Rate limiting
-3. Helmet.js security headers
-4. Input validation
-5. MongoDB injection protection
-
-## Development
-
-Run in development mode:
-
-```bash
-npm run dev
-```
+## Testing
 
 Run tests:
 
 ```bash
+# Run all tests
 npm test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests in watch mode
+npm run test:watch
 ```
+
+## Error Handling
+
+The API uses standard HTTP status codes:
+
+- 200: Success
+- 201: Created
+- 400: Bad Request
+- 401: Unauthorized
+- 403: Forbidden
+- 404: Not Found
+- 500: Internal Server Error
+
+## Security Features
+
+1. JWT Authentication
+2. Rate Limiting
+3. Input Validation
+4. CORS Protection
+5. Secure Password Hashing
+6. File Upload Validation
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
-MIT
+This project is licensed under the MIT License.

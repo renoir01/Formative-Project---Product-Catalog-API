@@ -1,0 +1,481 @@
+{
+    "info": {
+        "name": "Product Catalog API",
+        "description": "A comprehensive collection for testing the Product Catalog API endpoints",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Register User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"password\": \"Password123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/auth/register",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "auth", "register"]
+                        }
+                    }
+                },
+                {
+                    "name": "Login User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"Password123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/auth/login",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "auth", "login"]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Profile",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/auth/profile",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "auth", "profile"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Products",
+            "item": [
+                {
+                    "name": "Get All Products",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/products?page=1&limit=10",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "products"],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Product",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "Test Product",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Test product description",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "price",
+                                    "value": "99.99",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "{{categoryId}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "image",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/products",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "products"]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Product by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/products/{{productId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "products", "{{productId}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Product",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "Updated Product",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "price",
+                                    "value": "149.99",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "image",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/products/{{productId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "products", "{{productId}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Product",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/products/{{productId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "products", "{{productId}}"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Categories",
+            "item": [
+                {
+                    "name": "Get All Categories",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/categories",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "categories"]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Category",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Test Category\",\n    \"description\": \"Test category description\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/categories",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "categories"]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Category by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/categories/{{categoryId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "categories", "{{categoryId}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Category",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Updated Category\",\n    \"description\": \"Updated category description\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/categories/{{categoryId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "categories", "{{categoryId}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Category",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/categories/{{categoryId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "categories", "{{categoryId}}"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Collections",
+            "item": [
+                {
+                    "name": "Get All Collections",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/collections",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "collections"]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Collection",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "Test Collection",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Test collection description",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "startDate",
+                                    "value": "2025-04-01",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "endDate",
+                                    "value": "2025-04-30",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "image",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/collections",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "collections"]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Collection by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/collections/{{collectionId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "collections", "{{collectionId}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Collection",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "Updated Collection",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Updated collection description",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "image",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/collections/{{collectionId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "collections", "{{collectionId}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Collection",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/collections/{{collectionId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "collections", "{{collectionId}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Add Product to Collection",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"productId\": \"{{productId}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/collections/{{collectionId}}/products",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "collections", "{{collectionId}}", "products"]
+                        }
+                    }
+                },
+                {
+                    "name": "Remove Product from Collection",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/collections/{{collectionId}}/products/{{productId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "collections", "{{collectionId}}", "products", "{{productId}}"]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:3001"
+        }
+    ]
+}
