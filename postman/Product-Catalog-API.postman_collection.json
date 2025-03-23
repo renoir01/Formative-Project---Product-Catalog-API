@@ -1,0 +1,261 @@
+{
+  "info": {
+    "name": "Product Catalog API",
+    "description": "A complete API for managing product catalog with categories and variants",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "List Products (with Search & Filter)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3001/api/products?search=rgb&minPrice=60&maxPrice=70&sortBy=name&sortOrder=asc",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "products"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "rgb",
+                  "description": "Search in name, description, and tags"
+                },
+                {
+                  "key": "minPrice",
+                  "value": "60",
+                  "description": "Minimum price filter"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "70",
+                  "description": "Maximum price filter"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "name",
+                  "description": "Sort field (name, price, createdAt)"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "asc",
+                  "description": "Sort direction (asc, desc)"
+                }
+              ]
+            },
+            "description": "Search products with filters"
+          }
+        },
+        {
+          "name": "Create Product (with Variants)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "http://localhost:3001/api/products",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "products"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pro Gaming Mouse\",\n  \"description\": \"Professional high-performance gaming mouse with RGB lighting\",\n  \"basePrice\": 69.99,\n  \"category\": \"67dfbf4ab18eb37ad9105134\",\n  \"tags\": [\"gaming\", \"accessories\", \"mouse\", \"rgb\", \"professional\"],\n  \"variants\": [\n    {\n      \"size\": \"Standard\",\n      \"color\": \"Black\",\n      \"sku\": \"GM-BLK-PRO\",\n      \"price\": 69.99,\n      \"stock\": 100,\n      \"discountPercentage\": 10\n    },\n    {\n      \"size\": \"Standard\",\n      \"color\": \"White\",\n      \"sku\": \"GM-WHT-PRO\",\n      \"price\": 69.99,\n      \"stock\": 50,\n      \"discountPercentage\": 0\n    }\n  ]\n}"
+            },
+            "description": "Create a new product with multiple variants"
+          }
+        },
+        {
+          "name": "Get Product",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3001/api/products/67dfc592dacb18910c89b85e",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "products", "67dfc592dacb18910c89b85e"]
+            },
+            "description": "Get a specific product by ID"
+          }
+        },
+        {
+          "name": "Update Product (Add Variants)",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "http://localhost:3001/api/products/67dfc592dacb18910c89b85e",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "products", "67dfc592dacb18910c89b85e"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pro Gaming Mouse\",\n  \"description\": \"Professional high-performance gaming mouse with RGB lighting\",\n  \"basePrice\": 69.99,\n  \"category\": \"67dfbf4ab18eb37ad9105134\",\n  \"tags\": [\"gaming\", \"accessories\", \"mouse\", \"rgb\", \"professional\"],\n  \"variants\": [\n    {\n      \"size\": \"Standard\",\n      \"color\": \"Black\",\n      \"sku\": \"GM-BLK-PRO\",\n      \"price\": 69.99,\n      \"stock\": 100,\n      \"discountPercentage\": 10\n    },\n    {\n      \"size\": \"Standard\",\n      \"color\": \"White\",\n      \"sku\": \"GM-WHT-PRO\",\n      \"price\": 69.99,\n      \"stock\": 50,\n      \"discountPercentage\": 0\n    }\n  ]\n}"
+            },
+            "description": "Update a product with new variants"
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "http://localhost:3001/api/products/67dfc592dacb18910c89b85e",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "products", "67dfc592dacb18910c89b85e"]
+            },
+            "description": "Delete a product"
+          }
+        },
+        {
+          "name": "Get Product Stats",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3001/api/products/stats",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "products", "stats"]
+            },
+            "description": "Get product statistics including total count, average price, and category distribution"
+          }
+        },
+        {
+          "name": "Get Low Stock Products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3001/api/products/low-stock?threshold=50",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "products", "low-stock"],
+              "query": [
+                {
+                  "key": "threshold",
+                  "value": "50",
+                  "description": "Stock level threshold (products below this will be returned)"
+                }
+              ]
+            },
+            "description": "Get products with stock levels below the specified threshold"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3001/api/categories",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "categories"]
+            },
+            "description": "Get all categories"
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "http://localhost:3001/api/categories",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "categories"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Accessories\",\n  \"description\": \"Gaming and computer accessories\"\n}"
+            },
+            "description": "Create a new category"
+          }
+        },
+        {
+          "name": "Get Category",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3001/api/categories/67dfbf4ab18eb37ad9105134",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "categories", "67dfbf4ab18eb37ad9105134"]
+            },
+            "description": "Get a specific category by ID"
+          }
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "http://localhost:3001/api/categories/67dfbf4ab18eb37ad9105134",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "categories", "67dfbf4ab18eb37ad9105134"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Electronics & Gaming\",\n  \"description\": \"Electronic devices, gaming gear, and accessories\"\n}"
+            },
+            "description": "Update an existing category"
+          }
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "http://localhost:3001/api/categories/67dfbf4ab18eb37ad9105134",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "categories", "67dfbf4ab18eb37ad9105134"]
+            },
+            "description": "Delete a category"
+          }
+        }
+      ]
+    }
+  ]
+}

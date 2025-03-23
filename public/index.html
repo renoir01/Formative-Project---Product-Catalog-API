@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #1d4ed8;
+            --bg-color: #f8fafc;
+            --text-color: #1e293b;
+            --code-bg: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .endpoints {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+
+        .endpoint {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-left: 4px solid var(--primary-color);
+            background: #f1f5f9;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .get { background: #22c55e; color: white; }
+        .post { background: #3b82f6; color: white; }
+        .put { background: #f59e0b; color: white; }
+        .delete { background: #ef4444; color: white; }
+
+        .code-block {
+            background: var(--code-bg);
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #64748b;
+            margin-top: 3rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Product Catalog API</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h2 class="subtitle">A powerful RESTful API for managing your product catalog</h2>
+            <a href="/api-docs" class="cta-button">View API Documentation</a>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <h3>Product Management</h3>
+                <p>Create, read, update, and delete products with support for variants, categories, and tags.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Advanced Search</h3>
+                <p>Search products by name, description, or tags. Filter by price range and category.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Inventory Tracking</h3>
+                <p>Monitor stock levels, set low stock alerts, and manage product variants.</p>
+            </div>
+        </section>
+
+        <section class="endpoints">
+            <h2>Key Endpoints</h2>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/products</code>
+                <p>List all products with filtering and pagination</p>
+            </div>
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/products</code>
+                <p>Create a new product</p>
+            </div>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/products/stats</code>
+                <p>Get product statistics</p>
+            </div>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/categories</code>
+                <p>List all categories</p>
+            </div>
+        </section>
+
+        <section class="example">
+            <h2>Example Request</h2>
+            <div class="code-block">
+GET /api/products?search=gaming&minPrice=50&maxPrice=200&category=electronics
+            </div>
+            <div class="code-block">
+{
+    "name": "Gaming Mouse",
+    "description": "High-performance gaming mouse",
+    "basePrice": 59.99,
+    "category": "electronics",
+    "variants": [
+        {
+            "color": "Black",
+            "price": 59.99,
+            "stock": 100
+        }
+    ]
+}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 KAZE Renoir. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
